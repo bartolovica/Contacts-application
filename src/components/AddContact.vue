@@ -14,10 +14,19 @@
             <div class="form-group">
                 <label>Email</label>
                 <input type="text" class="form-control" placeholder="Email" v-model="contact.Email">
+                <button type="button" class="btn btn-primary" @click="addMail">Add another Mail</button>
+                <br>
+                <br>
+                <input type="text" v-show="addAnotherMail" class="form-control" placeholder="Another Email" v-model="contact.NewEmail">
+
             </div>
             <div class="form-group">
                 <label>Phone Number</label>
                 <input type="text" class="form-control" placeholder="Phone Number" v-model="contact.PhoneNumber">
+                <button type="button" class="btn btn-primary" @click="addNumber">Add another Number</button>
+                <br>
+                <br>
+                <input type="text" v-show="addAnotherNumber" class="form-control" placeholder="Another Phone number" v-model="contact.Email">
             </div>
             <div class="form-group">
                 <label>Address</label>
@@ -25,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label>Postal Code</label>
-                <input type="text" class="form-control" placeholder="City" v-model="contact.PostalCode">
+                <input type="text" class="form-control" placeholder="Postal Code" v-model="contact.PostalCode">
             </div>
              <div class="form-group">
                 <label>City</label>
@@ -39,7 +48,7 @@
                 <label>Tag</label>
                 <input type="text" class="form-control" placeholder="Tag" v-model="contact.Tag">
             </div>
-        <button type="submit" @click="addcontact" class="btn btn-primary">Submit</button>
+        <button type="submit" @click="addContact" class="btn btn-primary">Submit</button>
       </div>
 </template>
 
@@ -47,13 +56,16 @@
     export default {
     name: 'addContact',
     data () {
+      
         return {
+        addAnotherMail:false,
+        addAnotherNumber:false,
         contact: {},
       
         }
     },
     methods: {
-        addcontact(){
+        addContact(){
             if(!this.contact.Name && !this.contact.Surname && !this.contact.Email && !this.contact.PhoneNumber){
               console.log(this.contact.Name);
                 alert('clicked',this.contact.Name);
@@ -69,13 +81,52 @@
                     Country: this.contact.Country,
                     Tag: this.contact.Tag
                 }
-                console.log(newContact);
+                //console.log(newContact);
                 this.$http.post('http://localhost:63271/api/addContact', newContact)
                     .then(function(response){
-                        console.log(newContact)
+                        response.body.ContactId=newID
+                        /* console.log(response)
+                        if(response) */
+                        
+                 
+                /* if(this.addAnotherNumber)
+                {
+                    let newNumber = {
+                        PhoneNumber: this.contact.PhoneNumber,
+                        ContactId: this.contact.ContactId
+                    }
+                    this.$http.post('http://localhost:63271/api/Numbers', newNumber)
+                    .then(function(response){
+                    });
+                } */
+                        
                        this.$router.push({path: '/'});
                     });
+
+                               if(this.addAnotherMail)
+                {
+                    let newMail = {
+                        Email: this.contact.NewEmail,
+                        ContactId: newID,
+                        ContactsTable: newContact
+                    }
+                    this.$http.post('http://localhost:63271/api/Emails', newMail)
+                    .then(function(response){
+                        this.addAnotherMail=false;
+                    });
+                }
+                    
             }
+        },
+        addMail() {
+            //console.log(this.addAnotherMail)
+            this.addAnotherMail=true;
+            
+
+        },
+        addNumber() {
+            this.addAnotherNumber=true;
+            
         }
     },
     }
