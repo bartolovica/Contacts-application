@@ -5,14 +5,14 @@
             </span>
     </h1>
     <ul class="list-group">
-            <li class="list-group-item"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> {{contact.PhoneNumber}}</li>
-            <li class="list-group-item"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{contact.Email}}</li>
+            <li class="list-group-item"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span>&nbsp;{{contact.PhoneNumber}}</li>
+            <li class="list-group-item"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;{{contact.Email}}</li>
         </ul>
         <ul class="list-group">
-            <li class="list-group-item">Tag :{{contact.Tag}}</li>
-            <li class="list-group-item">Adress : {{contact.Adress}}</li>
-            <li class="list-group-item">City: {{contact.City}}</li>
-            <li class="list-group-item">Country: {{contact.Country}}</li>
+            <li class="list-group-item">Tag:&nbsp;{{contact.Tag}}</li>
+            <li class="list-group-item">Adress:&nbsp; {{contact.Adress}}</li>
+            <li class="list-group-item">City:&nbsp;{{contact.City}}</li>
+            <li class="list-group-item">Country:&nbsp;{{contact.Country}}</li>
         </ul>
   </div>
 </template>

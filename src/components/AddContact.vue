@@ -60,6 +60,7 @@
         return {
         addAnotherMail:false,
         addAnotherNumber:false,
+        newID:null,
         contact: {},
       
         }
@@ -84,9 +85,21 @@
                 //console.log(newContact);
                 this.$http.post('http://localhost:63271/api/addContact', newContact)
                     .then(function(response){
-                        response.body.ContactId=newID
-                        /* console.log(response)
-                        if(response) */
+                        this.newID=response.body.ContactId
+                        //console.log(response.body)
+                        if(response) {
+                         if(this.addAnotherMail)
+                {
+                    let newMail = {
+                        Email: this.contact.NewEmail,
+                        ContactId: this.newID,
+                        ContactsTable: newContact
+                    }
+                    this.$http.post('http://localhost:63271/api/Emails', newMail)
+                    .then(function(response){
+                        this.addAnotherMail=false;
+                    });
+                } 
                         
                  
                 /* if(this.addAnotherNumber)
@@ -101,20 +114,9 @@
                 } */
                         
                        this.$router.push({path: '/'});
-                    });
+                     } });
 
-                               if(this.addAnotherMail)
-                {
-                    let newMail = {
-                        Email: this.contact.NewEmail,
-                        ContactId: newID,
-                        ContactsTable: newContact
-                    }
-                    this.$http.post('http://localhost:63271/api/Emails', newMail)
-                    .then(function(response){
-                        this.addAnotherMail=false;
-                    });
-                }
+                               
                     
             }
         },
