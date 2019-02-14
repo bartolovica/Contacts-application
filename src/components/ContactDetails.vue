@@ -5,8 +5,12 @@
             </span>
     </h1>
     <ul class="list-group">
-            <li class="list-group-item"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span>&nbsp;{{contact.PhoneNumber}}</li>
-            <li class="list-group-item"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;{{contact.Email}}</li>
+      <div v-for="(item, index) in contact.Numbers" :key="index">
+            <li class="list-group-item"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span>&nbsp;{{item.Number}}</li>
+      </div>
+      <div v-for="(item, index) in contact.Emails" :key="index">  
+            <li class="list-group-item"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;{{item.Email}}</li>
+      </div>
         </ul>
         <ul class="list-group">
             <li class="list-group-item">Tag:&nbsp;{{contact.Tag}}</li>
@@ -28,18 +32,21 @@ export default {
   methods:{
       getContact(ContactId){
           console.log(ContactId);
-          this.$http.get('http://localhost:63271/api/ContactsGeneral/'+ContactId)
+          this.$http.get('http://localhost:63271/api/Contacts/'+ContactId)
           .then(function(response){
             this.contact = response.body;
+            console.log(response);
           });
       },
+      addNumber() {
+            this.contact.Numbers.push({});
+        }
+
   },
   created: function(){
       this.getContact(this.$route.params.ContactId);
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

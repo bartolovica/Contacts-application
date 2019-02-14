@@ -11,14 +11,20 @@
                 <label>Last Name</label>
                 <input type="text" class="form-control" placeholder="Last Name" v-model="contact.Surname">
             </div>
-            <div class="form-group">
+           <div class="form-group" v-for="(item, index) in contact.Emails" :key="index">
                 <label>Email</label>
-                <input type="text" class="form-control" placeholder="Email" v-model="contact.Email">
+                <input type="text" class="form-control" placeholder="Email" v-model="item.Email">
             </div>
-            <div class="form-group">
+                <button type="button" class="btn btn-primary" @click="addMail">Add a new e-mail</button>
+            <br>
+             <br>
+            <div class="form-group" v-for="(item, index) in contact.Numbers" :key="index">
                 <label>Phone Number</label>
-                <input type="text" class="form-control" placeholder="Phone Number" v-model="contact.PhoneNumber">
+                <input type="text" class="form-control" placeholder="Phone Number" v-model="item.Number">
             </div>
+                <button type="button" class="btn btn-primary" @click="addNumber">Add a new Phone number</button>
+            <br>
+             <br>
             <div class="form-group">
                 <label>Address</label>
                 <input type="text" class="form-control" placeholder="Address" v-model="contact.Adress">
@@ -48,43 +54,36 @@
     name: 'updateContact',
     data () {
         return {
-        contact: {},
+        contact: {
+            Emails: [],
+            Numbers: [],
+        },
         }
     },
     methods: {
-
         getContact(ContactId){
-          console.log(ContactId);
-          this.$http.get('http://localhost:63271/api/ContactsGeneral/'+ContactId)
+          this.$http.get('http://localhost:63271/api/Contacts/'+ContactId)
           .then(function(response){
             this.contact = response.body;
           });
       },
         updateContact(){
-            if(!this.contact.Name && !this.contact.Surname && !this.contact.Email && !this.contact.PhoneNumber){
-              console.log(this.contact.Name);
-                alert('clicked',this.contact.Name);
+            if(!this.contact.Name && !this.contact.Surname){
+                alert('You have to fill required fields:name i surname');
             } else {
-                let updateContact = {
-                    ContactId:this.ContactId,
-                    Name: this.contact.Name,
-                    Surname: this.contact.Surname,
-                    PhoneNumber: this.contact.PhoneNumber,
-                    Email: this.contact.Email,
-                    Adress: this.contact.Adress,
-                    PostalCode: this.contact.PostalCode,
-                    City: this.contact.City,
-                    Country: this.contact.Country,
-                    Tag: this.contact.Tag
-                }
-                console.log(updateContact);
-                this.$http.put('http://localhost:63271/api/ContactsGeneral/'+this.$route.params.ContactId, updateContact)
+                console.log(this.contact);
+                this.$http.put('http://localhost:63271/api/updateContacts/' + this.$route.params.ContactId , this.contact)
                     .then(function(response){
-                        //console.log(updateContact)
                        this.$router.push({path: '/'});
                     });
             }
         },
+         addMail() {
+            this.contact.Emails.push({});
+        },
+        addNumber() {
+            this.contact.Numbers.push({});
+        }
     },
      created: function(){
       this.getContact(this.$route.params.ContactId);

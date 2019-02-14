@@ -58,5 +58,4 @@ new Vue({
   <router-view></router-view>
   </div>
   `
- 
 }).$mount('#app')
